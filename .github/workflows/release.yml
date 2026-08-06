@@ -1,0 +1,62 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_version:
+        description: Expected .xgc2/product.yml version
+        required: true
+        type: string
+      expected_source_sha:
+        description: Expected source commit SHA
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate source and product contract
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ inputs.expected_source_sha }}"
+          version="$(awk -F': *' '/^version:/ {print $2; exit}' .xgc2/product.yml)"
+          test "$version" = "${{ inputs.expected_version }}"
+          .xgc2/scripts/check_package_compliance.sh
+
+  build-debs:
+    needs: validate
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and install-check Noetic Deb
+        env:
+          EXPECTED_ARCH: ${{ matrix.arch }}
+        run: |
+          .xgc2/scripts/build_debs_in_docker.sh --work-dir "$RUNNER_TEMP/xgc2-b2arx-noetic-release-${{ matrix.arch }}" --output-dir "$GITHUB_WORKSPACE/debs"
+
+      - name: Upload release Deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: xgc2-b2arx-noetic-release-${{ matrix.arch }}
+          path: debs/*.deb
+          if-no-files-found: error
+          retention-days: 14

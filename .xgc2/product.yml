@@ -2,16 +2,41 @@ schema: xgc2.product.v1
 id: xgc2-b2arx-description
 name: XGC2 B2ARX Description
 version: 0.1.0
-kind: ros2-source
-summary: ROS 2 visual description assets for Unitree B2 + ARX R5a (b2arx).
+kind: ros1-apt
+summary: ROS Noetic visual description assets for Unitree B2 + ARX R5a (b2arx).
+groups:
+- ros1
+- robot
+- description
 ros:
-  distro: jazzy
+  distro: noetic
   packages:
   - b2arx_description
+apt:
+  distribution: focal
+  install:
+  - ros-noetic-xgc2-b2arx-description
+  packages:
+  - ros-noetic-xgc2-b2arx-description
+  package_architectures:
+    ros-noetic-xgc2-b2arx-description:
+    - amd64
+    - arm64
+  depends:
+  - ros-noetic-urdf
 usage:
+  install: |
+    sudo apt update
+    sudo apt install ros-noetic-xgc2-b2arx-description
   smoke_test: |
-    ros2 pkg prefix b2arx_description
-    test -f "$(ros2 pkg prefix b2arx_description)/share/b2arx_description/urdf/b2arx_visual.urdf"
+    rospack find b2arx_description
+    test -f /opt/ros/noetic/share/b2arx_description/urdf/b2arx_visual.urdf
 ownership:
   paths:
-  - share/b2arx_description
+  - /opt/ros/noetic/share/b2arx_description
+release:
+  repository: lxk36/xgc2-b2arx-description
+  ref: noetic
+  workflow: release.yml
+  apt_versions:
+    focal: 0.1.0

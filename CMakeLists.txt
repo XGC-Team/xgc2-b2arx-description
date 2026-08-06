@@ -1,15 +1,18 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.0.2)
 project(b2arx_description)
 
-find_package(ament_cmake REQUIRED)
+find_package(catkin REQUIRED)
 
-install(DIRECTORY meshes urdf
-  DESTINATION share/${PROJECT_NAME}
-)
+catkin_package()
 
-if(BUILD_TESTING)
-  find_package(ament_cmake_pytest REQUIRED)
-  ament_add_pytest_test(b2arx_visual_assets test/test_visual_assets.py)
+if(CATKIN_ENABLE_TESTING)
+  catkin_add_nosetests(test/test_visual_assets.py)
 endif()
 
-ament_package()
+install(DIRECTORY meshes urdf
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
+
+install(FILES ASSET_SHA256SUMS LICENSE MODEL_ASSET_NOTICE.md
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
