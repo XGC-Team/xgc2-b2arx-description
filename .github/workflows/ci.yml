@@ -2,34 +2,28 @@ name: ci
 
 on:
   push:
-    branches:
-      - noetic
   pull_request:
-    branches:
-      - noetic
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  compliance-and-assets:
+  compliance:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-      - name: Validate visual package boundary
+      - name: Run metadata checks
         run: |
           set -euo pipefail
-          git diff --check
+          git diff --check HEAD
           .xgc2/scripts/check_package_compliance.sh
 
   build-debs:
-    needs: compliance-and-assets
     strategy:
       fail-fast: false
       matrix:
@@ -41,17 +35,36 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
-      - name: Build and install-check Noetic Deb
-        env:
-          EXPECTED_ARCH: ${{ matrix.arch }}
+      - name: Build and install-check deb package
         run: |
-          .xgc2/scripts/build_debs_in_docker.sh --work-dir "$RUNNER_TEMP/xgc2-b2arx-noetic-${{ matrix.arch }}" --output-dir "$GITHUB_WORKSPACE/debs"
+          .xgc2/scripts/build_debs_in_docker.sh \
+            --work-dir "$RUNNER_TEMP/xgc2-b2arx-description-${{ matrix.arch }}" \
+            --output-dir "$GITHUB_WORKSPACE/debs"
 
-      - name: Upload Deb
+      - name: Create trusted build manifest
+        run: |
+          product_version="$(awk -F': *' '/^version:/ {print $2; exit}' .xgc2/product.yml)"
+          python3 .xgc2/scripts/xgc2_artifact_manifest.py build \
+            --deb-dir debs \
+            --output-dir .ci/build-manifests \
+            --product xgc2-b2arx-description \
+            --product-version "$product_version" \
+            --distribution focal \
+            --architecture "${{ matrix.arch }}" \
+            --source-sha "$GITHUB_SHA" \
+            --ci-run-id "$GITHUB_RUN_ID" \
+            --ci-workflow "$GITHUB_WORKFLOW" \
+            --ci-workflow-ref "$GITHUB_WORKFLOW_REF"
+
+      - name: Upload deb artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: xgc2-b2arx-noetic-deb-${{ matrix.arch }}
-          path: debs/*.deb
-          if-no-files-found: error
+          name: xgc2-b2arx-description-debs-${{ matrix.arch }}
+          path: |
+            debs/*.deb
+            .ci/build-manifests/*.json
           retention-days: 14
+          include-hidden-files: true

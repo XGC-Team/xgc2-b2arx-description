@@ -38,7 +38,7 @@ done
 mkdir -p "${WORK_DIR}" "${OUTPUT_DIR}"
 
 docker pull "${DOCKER_IMAGE}"
-docker run --rm -e DEBIAN_FRONTEND=noninteractive -e EXPECTED_ARCH="${EXPECTED_ARCH}" -e INSTALL_CHECK="${INSTALL_CHECK}" -v "${REPO_ROOT}:/workspace/repo:ro" -v "${WORK_DIR}:/workspace/work" -v "${OUTPUT_DIR}:/workspace/out" "${DOCKER_IMAGE}" bash -lc '
+docker run --rm -e XGC2_APT_OVERLAY_URL="${XGC2_APT_OVERLAY_URL:-}" -e DEBIAN_FRONTEND=noninteractive -e EXPECTED_ARCH="${EXPECTED_ARCH}" -e INSTALL_CHECK="${INSTALL_CHECK}" -v "${REPO_ROOT}:/workspace/repo:ro" -v "${WORK_DIR}:/workspace/work" -v "${OUTPUT_DIR}:/workspace/out" "${DOCKER_IMAGE}" bash -lc '
     set -euo pipefail
 
     export DEBIAN_FRONTEND=noninteractive

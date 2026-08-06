@@ -38,5 +38,6 @@ release:
   repository: lxk36/xgc2-b2arx-description
   ref: noetic
   workflow: release.yml
+  ci_workflow: ci.yml
   apt_versions:
     focal: 0.1.0
