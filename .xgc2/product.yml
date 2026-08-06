@@ -1,0 +1,17 @@
+schema: xgc2.product.v1
+id: xgc2-b2arx-description
+name: XGC2 B2ARX Description
+version: 0.1.0
+kind: ros2-source
+summary: ROS 2 visual description assets for Unitree B2 + ARX R5a (b2arx).
+ros:
+  distro: jazzy
+  packages:
+  - b2arx_description
+usage:
+  smoke_test: |
+    ros2 pkg prefix b2arx_description
+    test -f "$(ros2 pkg prefix b2arx_description)/share/b2arx_description/urdf/b2arx_visual.urdf"
+ownership:
+  paths:
+  - share/b2arx_description
