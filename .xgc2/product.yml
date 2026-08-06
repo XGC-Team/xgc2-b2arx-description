@@ -1,17 +1,46 @@
 schema: xgc2.product.v1
-id: xgc2-b2arx-description
-name: XGC2 B2ARX Description
+id: xgc2-ros-jazzy-b2arx-description
+name: XGC2 B2ARX Description for ROS Jazzy
 version: 0.1.0
-kind: ros2-source
-summary: ROS 2 visual description assets for Unitree B2 + ARX R5a (b2arx).
+kind: ros2-apt
+summary: ROS Jazzy visual description assets for Unitree B2 + ARX R5a (b2arx).
+groups:
+- ros2
+- robot
+- description
 ros:
   distro: jazzy
   packages:
   - b2arx_description
+apt:
+  distribution: noble
+  install:
+  - ros-jazzy-xgc2-b2arx-description
+  packages:
+  - ros-jazzy-xgc2-b2arx-description
+  package_architectures:
+    ros-jazzy-xgc2-b2arx-description:
+    - amd64
+    - arm64
+  depends:
+  - ros-jazzy-urdf
 usage:
+  install: |
+    sudo apt update
+    sudo apt install ros-jazzy-xgc2-b2arx-description
   smoke_test: |
     ros2 pkg prefix b2arx_description
-    test -f "$(ros2 pkg prefix b2arx_description)/share/b2arx_description/urdf/b2arx_visual.urdf"
+    test -f /opt/ros/jazzy/share/b2arx_description/urdf/b2arx_visual.urdf
 ownership:
   paths:
-  - share/b2arx_description
+  - /opt/ros/jazzy/share/b2arx_description
+  - /opt/ros/jazzy/share/ament_index/resource_index/packages/b2arx_description
+  - /opt/ros/jazzy/share/ament_index/resource_index/package_run_dependencies/b2arx_description
+  - /opt/ros/jazzy/share/ament_index/resource_index/parent_prefix_path/b2arx_description
+release:
+  repository: lxk36/xgc2-b2arx-description
+  ref: jazzy
+  workflow: release.yml
+  ci_workflow: ci.yml
+  apt_versions:
+    noble: 0.1.0
