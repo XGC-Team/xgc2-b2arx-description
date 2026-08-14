@@ -38,7 +38,7 @@ ownership:
   - /opt/ros/jazzy/share/ament_index/resource_index/package_run_dependencies/b2arx_description
   - /opt/ros/jazzy/share/ament_index/resource_index/parent_prefix_path/b2arx_description
 release:
-  repository: lxk36/xgc2-b2arx-description
+  repository: XGC-Team/xgc2-b2arx-description
   ref: jazzy
   workflow: release.yml
   ci_workflow: ci.yml
