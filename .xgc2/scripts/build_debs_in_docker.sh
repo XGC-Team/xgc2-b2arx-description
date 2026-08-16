@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 
-DOCKER_IMAGE="${DOCKER_IMAGE:-ros:jazzy-ros-base-noble}"
+DOCKER_IMAGE="${DOCKER_IMAGE:-ghcr.io/xgc-team/xgc2-images/xgc2-build-noble-ros-jazzy:1.0.0}"
 WORK_DIR="${WORK_DIR:-${REPO_ROOT}/.work/docker}"
 OUTPUT_DIR="${OUTPUT_DIR:-${REPO_ROOT}/debs}"
 INSTALL_CHECK="${INSTALL_CHECK:-true}"
@@ -47,9 +47,6 @@ docker run --rm -e XGC2_APT_OVERLAY_URL="${XGC2_APT_OVERLAY_URL:-}" -e DEBIAN_FR
       echo "container architecture ${actual_arch} != expected ${EXPECTED_ARCH}" >&2
       exit 1
     fi
-
-    apt-get update
-    apt-get install -y --no-install-recommends build-essential cmake dpkg-dev fakeroot file python3 python3-colcon-common-extensions python3-pytest rsync ros-jazzy-ament-cmake ros-jazzy-ament-cmake-pytest ros-jazzy-ros2pkg ros-jazzy-urdf
 
     rm -rf /workspace/work/build /workspace/work/install /workspace/work/install-root /workspace/work/log /workspace/work/src /workspace/work/stage-build
     mkdir -p /workspace/work/src/b2arx_description
