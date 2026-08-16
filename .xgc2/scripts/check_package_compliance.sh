@@ -2,7 +2,7 @@
 set -euo pipefail
 
 grep -q '^id: xgc2-ros-jazzy-b2arx-description$' .xgc2/product.yml
-grep -q '^version: 0.1.0$' .xgc2/product.yml
+grep -q '^version: 0.1.0-1$' .xgc2/product.yml
 grep -q '^kind: ros2-apt$' .xgc2/product.yml
 grep -q '^  distro: jazzy$' .xgc2/product.yml
 grep -q '^  distribution: noble$' .xgc2/product.yml

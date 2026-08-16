@@ -1,7 +1,7 @@
 schema: xgc2.product.v1
 id: xgc2-ros-jazzy-b2arx-description
 name: XGC2 B2ARX Description for ROS Jazzy
-version: 0.1.0
+version: 0.1.0-1
 kind: ros2-apt
 summary: ROS Jazzy visual description assets for Unitree B2 + ARX R5a (b2arx).
 groups:
@@ -43,4 +43,4 @@ release:
   workflow: release.yml
   ci_workflow: ci.yml
   apt_versions:
-    noble: 0.1.0
+    noble: 0.1.0-1
