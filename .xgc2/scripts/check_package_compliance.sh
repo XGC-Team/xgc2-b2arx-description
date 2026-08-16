@@ -2,7 +2,7 @@
 set -euo pipefail
 
 grep -q '^id: xgc2-b2arx-description$' .xgc2/product.yml
-grep -q '^version: 0.1.0$' .xgc2/product.yml
+grep -q '^version: 0.1.0-1$' .xgc2/product.yml
 grep -q '^kind: ros1-apt$' .xgc2/product.yml
 grep -q '^  distro: noetic$' .xgc2/product.yml
 grep -q '^  distribution: focal$' .xgc2/product.yml
