@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "release_visual": "reference",
+  "variants": {
+    "reference": {
+      "role": "original_visual_reference",
+      "urdf": "urdf/b2arx_visual.urdf",
+      "vehicle_triangles": 315713
+    },
+    "lod10k": {
+      "role": "lod_high",
+      "status": "component_comparison_complete_runtime_acceptance_pending",
+      "urdf": "urdf/b2arx_visual_lod10k.urdf",
+      "vehicle_triangles": 10179,
+      "nominal_vehicle_triangle_budget": 10000
+    },
+    "lod_medium": {
+      "role": "lod_medium",
+      "status": "component_comparison_complete_runtime_acceptance_pending",
+      "urdf": "urdf/b2arx_visual_lod_medium.urdf",
+      "vehicle_triangles": 6389,
+      "nominal_vehicle_triangle_budget": 5000
+    },
+    "lod1500": {
+      "role": "lod_low",
+      "status": "component_comparison_complete_runtime_acceptance_pending",
+      "urdf": "urdf/b2arx_visual_lod1500.urdf",
+      "vehicle_triangles": 4418,
+      "nominal_vehicle_triangle_budget": 1500,
+      "hard_vehicle_triangle_cap": null
+    }
+  },
+  "lod_tiers": {
+    "high": "lod10k",
+    "medium": "lod_medium",
+    "low": "lod1500"
+  },
+  "physics": "Visual selection preserves original source geometry and all nonvisual kinematic/physics contracts."
+}
